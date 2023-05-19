@@ -6,36 +6,43 @@ use App\Entity\Article;
 use App\Entity\Comment;
 use App\Form\CommentType;
 use App\Repository\CommentRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/article/{id}/comment')]
 class CommentController extends AbstractController
 {
 
-    #[Route('/new', name: 'app_comment_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, CommentRepository $commentRepository, Article $article): Response
+    #[Route('/new', name: 'app_comment_new', methods: ['POST'])]
+    public function new(Request $request, EntityManagerInterface $entityManager, Article $article): Response
     {
         $comment = new Comment();
         $comment->setCreatedAt(new \DateTimeImmutable());
         $comment->setUser($this->getUser());
+
         $comment->setArticle($article);
-        $form = $this->createForm(CommentType::class, $comment);
-        $form->handleRequest($request);
+        $payload = json_decode($request->getContent(), true);
+        $commentBody = $payload['comment'];
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $commentRepository->save($comment, true);
+        $comment->setContent($commentBody);
+        $comment->setContent($commentBody);
+        $entityManager->persist($comment);
+        $article->addComment($comment);
+        $entityManager->persist($article);
+        $entityManager->flush();
 
-            return $this->redirectToRoute('app_article_show', [
-                'id'=> $article->getId()
-            ], Response::HTTP_SEE_OTHER);
-        }
+        $output = array();
+        $output['msg'] = "OK";
 
-        return $this->renderForm('comment/new.html.twig', [
-            'comment' => $comment,
-            'form' => $form,
-        ]);
+        $output["body"] = $commentBody;
+        $output["created"] = $comment->getCreatedAt()->format("d/m/Y H:i:s");
+        $output["author"] = $this->getUser()->getUserName();
+
+        return new JsonResponse($output);
+
     }
 }

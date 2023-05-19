@@ -39,7 +39,6 @@ class DashboardController extends AbstractDashboardController
             MenuItem::subMenu('Articles', 'fa fa-newspaper')->setSubItems([
                 MenuItem::linkToCrud('Catégories', 'fa fa-list', Category::class),
                 MenuItem::linkToCrud('Tous les articles', 'fa fa-newspaper', Article::class),
-                MenuItem::linkToCrud('Ajouter un article', 'fa fa-plus', Article::class)->setAction(Crud::PAGE_NEW)
             ]),
 
             MenuItem::section(),

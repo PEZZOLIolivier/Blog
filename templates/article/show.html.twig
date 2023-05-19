@@ -3,30 +3,36 @@
 {% block title %}Article{% endblock %}
 
 {% block body %}
-    <h1>Article</h1>
+    <h1 class="col mb-3 text-center">{{ article.title }}</h1>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Title</th>
-                <td>{{ article.title }}</td>
-            </tr>
-            <tr>
-                <th>Content</th>
-                <td>{{ article.content }}</td>
-            </tr>
-        </tbody>
-    </table>
-
-    <div>
-        <a href="{{ path('app_comment_new', { 'id': article.id }) }}">Ajouter un commentaire</a>
+    <div class="bg-light p-1 rounded-3">
+        <p>{{ article.content }}</p>
+    </div>
+    <hr>
+    <textarea type="text" id="comment-input" placeholder="entrer votre commentaire..." class="w-100"></textarea>
+    <div class="row">
+        <a class="col btn btn-dark text-center m-2" href="#" id="btn-post-comment">Poster votre commentaire</a>
     </div>
 
-    <div>
-        {% for comment in comments %}
-            <div><b>{{ "now"|date("d/m/Y H:i:s") }} - {{ comment.user.userName }} à dit:</b></div>
-            <div>{{ comment.content }}</div>
-        {% endfor %}
+    <br>
+
+    <div class="mt-5">
+        <h2 class="mb-5">Commentaire(s)</h2>
+        <div id="list-comments" class="comments">
+            {% for comment in article.comments|sort|reverse %}
+            <div class="comment flex justify-start mb-5 rounded-3">
+                <div>
+                    <div class="d-block p-1 rounded-3 shadow-sm comment-bg">
+                        <div>
+                            <p><b>{{ "now"|date("d/m/Y H:i:s") }} - {{ comment.user.userName }} à dit:</b></p>
+                            <p>{{ comment.content }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
     </div>
 
     <a href="{{ path('app_category_index') }}">retour à la liste des catégories</a>

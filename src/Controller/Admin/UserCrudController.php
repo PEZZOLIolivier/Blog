@@ -38,7 +38,7 @@ class UserCrudController extends AbstractCrudController
     {
         $fields = [
             TextField::new('email'),
-            TextField::new('password'),
+            TextField::new('password')->onlyWhenCreating(),
             TextField::new('firstName'),
             TextField::new('lastName'),
             TextField::new('userName'),

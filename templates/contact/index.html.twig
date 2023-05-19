@@ -4,10 +4,21 @@
 
 {% block body %}
 
-    <h1>Formulaire de contact</h1>
+    <h1  class="col mb-3 text-center">Formulaire de contact</h1>
 
     <div>
-        {{ form(contactForm) }}
+        {{ form_start(contactForm) }}
+            {{ form_row(contactForm.email) }}
+            {{ form_row(contactForm.subject, {
+                label: 'Sujet'
+            }) }}
+            {{ form_row(contactForm.content, {
+                label: 'Message'
+            }) }}
+            {{ form_row(contactForm.confirm, {
+                label: 'Envoyer le message'
+            }) }}
+        {{ form_end(contactForm) }}
     </div>
 
 {% endblock %}

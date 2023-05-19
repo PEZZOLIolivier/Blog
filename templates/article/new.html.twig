@@ -3,8 +3,27 @@
 {% block title %}New Article{% endblock %}
 
 {% block body %}
-    <h1>Create new Article</h1>
+    <h1 class="col mb-3 text-center">Ajouter un article</h1>
 
-    {{ include('article/_form.html.twig') }}
+    {{ form_start(articleForm, {'action': path('app_article_new'), 'method': 'POST'})  }}
+    <section class=" row required border rounded-3 m-2 p-2 bg-light shadow-sm">
+        <div>
+            <b>{{ form_label(articleForm.title) }}</b>
+            <div class="col m-1 mb-3">{{ form_widget(articleForm.title) }}</div>
+        </div>
+        <div>
+            <b>{{ form_label(articleForm.content) }}</b>
+            <div class="m-1 mb-3">{{ form_widget(articleForm.content) }}</div>
+        </div>
+        <div>
+            <b>{{ form_label(articleForm.category) }}</b>
+            <div class="m-1 mb-3">{{ form_widget(articleForm.category) }}</div>
+        </div>
+    </section>
+    <div class="row">
+        <button class="col btn btn-dark text-center m-3 p-2">{{ button_label|default('Poster votre article') }}</button>
+    </div>
+    {{ form_end(articleForm)  }}
+
 
 {% endblock %}

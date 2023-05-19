@@ -3,22 +3,12 @@
 {% block title %}Category{% endblock %}
 
 {% block body %}
-    <h1>Category</h1>
+    <h1 class="col mb-3 text-center">{{ category.name }}</h1>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Name</th>
-                <td>{{ category.name }}</td>
-            </tr>
-        </tbody>
-    </table>
 
-    <a href="{{ path('app_category_index') }}">retour à la liste des catégories</a>
 
     <div>
-        <h2>Liste des articles de la catégorie {{ category.name }}</h2>
-        {% for article in articles %}
+        <h2 class="col mb-3 text-center">Liste des articles de la catégorie {{ category.name }}</h2>
             <table class="table">
                 <thead>
                 <tr>
@@ -43,7 +33,8 @@
                 {% endfor %}
                 </tbody>
             </table>
-        {% endfor %}
+
+        <a href="{{ path('app_category_index') }}">retour à la liste des catégories</a>
     </div>
 
 {% endblock %}
